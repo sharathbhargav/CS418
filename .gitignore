@@ -127,3 +127,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Custom ignores
+models/
+data_collection/gutenberg/texts
+data_collection/gutenberg/cache
+*.txt.gz
+*.db
