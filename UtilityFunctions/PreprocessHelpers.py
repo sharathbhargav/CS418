@@ -32,7 +32,7 @@ class Preprocessor:
         return words
 
     def remove_punctuation(self,words):
-        table = str.maketrans('', '', string.punctuation)
+        
         stripped = [w for w in words if w not in string.punctuation]
         return stripped
 

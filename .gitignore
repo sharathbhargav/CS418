@@ -133,5 +133,6 @@ dmypy.json
 models/
 data_collection/gutenberg/texts
 data_collection/gutenberg/cache
+data_collection/raw_books
 *.txt.gz
 *.db
