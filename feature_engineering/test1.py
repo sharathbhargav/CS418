@@ -17,17 +17,14 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 from sklearn.pipeline import Pipeline
 
 
-# %%
 RAW_BOOK_FOLDER = os.path.join("..","data_collection","raw_books")
 PREPROCESSED_STORE_LOC = os.path.join("..","data","preprocessed")
 
 
-# %%
 google_corpus_path  = "../models/GoogleNews-vectors-negative300.bin"
 model_google = KeyedVectors.load_word2vec_format(google_corpus_path,binary=True)
 
 
-# %%
 list_of_words = CommonHelpers.load_pickle("../data/preprocessed/hundred_books_preprocessed.pickle")
 book_names =  CommonHelpers.load_pickle("../data/preprocessed/hundred_names.pickle")
 
@@ -81,8 +78,9 @@ for i in range(len(titles_train)):
     doc_vec_train[titles_train[i]]= train_vectors[i]
     genres_train[titles_train[i]] = categories_train[i]
 
-
-tsne.plot_vectors(model_google,doc_vec_train,genres_train)
+words_test = {"a":["king","man"],"b":["queen","woman"],"c":["spaceship","sewage","rocket","satelite","drainage"]}
+# tsne.plot_vectors(model_google,doc_vec_train,genres_train)
+tsne.plot_words(model_google,words_test)
 """
 
 forest = RandomForestClassifier(n_estimators = 100)

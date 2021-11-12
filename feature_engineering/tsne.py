@@ -84,15 +84,13 @@ def tsne_plot(labels,tokens,genre):
 
 
 def plot_words(model,words):
-
+	'''
 	words = {'adventure': ['adventure', 'voyage', 'combat', 'fight', 'battle', 'escapade', 'dangerous', 'undertake', 'gamble', 'chance', 'risk', 'hazard', 'venture', 'stake', 'jeopardy'],
 				'romance': ['romance', 'love', 'affair', 'woo', 'solicit', 'flirt', 'dally', 'butterfly', 'coquet', 'coquette', 'philander', 'comfort', 'console', 'solace', 'ease', 'soothe', 'friendship', 'passion', 'beloved', 'dear', 'honey', 'intimate', 'beautiful', 'marry', 'espouse', 'sweet', 'angelic', 'perfume', 'girl', 'miss', 'child', 'kiss', 'treasure'],
 				'tragedy': ['tragedy', 'death', 'disaster', 'calamity', 'catastrophe', 'cataclysm', 'betrayal', 'treason', 'perfidy', 'grief', 'heartache', 'heartbreak', 'sorrow', 'humiliation', 'mortification', 'abasement', 'chagrin', 'misfortune', 'luck', 'omen', 'cry'],
 				'mystery': ['suspense', 'frenzy', 'mystery', 'enigma', 'secret', 'whodunit', 'thriller', 'crime', 'detective', 'investigator', 'police', 'evidence', 'testify', 'witness', 'attest', 'clue', 'murder', 'execution', 'kill', 'weapon', 'fear', 'dread', 'terror', 'panic', 'pocket', 'solve'],
 				'humor': ['comedy', 'drollery', 'clown', 'funny', 'humor', 'wit', 'mood', 'temper', 'satire', 'sarcasm', 'irony', 'remark', 'parody', 'lampoon', 'spoof', 'mockery', 'burlesque', 'travesty', 'pasquinade', 'laugh']}
-
-	chicago_corpus_path = "../models/chi_w2v_embeddings"
-	model_chicag = KeyedVectors.load_word2vec_format(chicago_corpus_path)
+	'''
 	(labels,tokens,genre) = tsne_prep_from_words(model,words)
 	tsne_plot(labels,tokens,genre)
 
