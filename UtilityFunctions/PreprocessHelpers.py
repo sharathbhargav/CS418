@@ -4,16 +4,18 @@ from nltk.corpus.reader.plaintext import PlaintextCorpusReader
 from nltk.corpus import stopwords
 from nltk import tokenize 
 from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 from string import punctuation
 import pickle
 import math
-nltk.download('punkt')
+import string
+import re
 import xml.etree.ElementTree as ET
-from nltk.stem import WordNetLemmatizer
 nltk.download('stopwords')
 nltk.download('wordnet')
-import string
+nltk.download('punkt')
 
+nltk.download('averaged_perceptron_tagger')
 
 class Preprocessor:
     def __init__(self) -> None:
@@ -23,7 +25,16 @@ class Preprocessor:
 
     def set_text(self,raw_string):
         self.raw_string=raw_string
+        self.clean_chars()
 
+    def clean_chars(self):
+        self.raw_string = s = re.sub('[^A-Za-z]', r' ', self.raw_string)
+
+    def remove_proper_nouns(self,words):
+        tagged_sentence = nltk.tag.pos_tag(words)
+        edited_sentence = [word for word,tag in tagged_sentence if tag != 'NNP' and tag != 'NNPS']
+        return edited_sentence
+    
     def tokenize_corpus(self): # tokenize on whitespace and remove punctuation
         words = []
         # todo check if all punctuations are removed
@@ -48,23 +59,26 @@ class Preprocessor:
         lem = [self.lemmatizer.lemmatize(each) for each in words]
         return lem
 
-    def run_basic_pipeline(self,remove_punctuation=False):
+    def run_basic_pipeline(self,remove_punctuation=False,remove_proper_nouns=False):
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
         cleaned_words = self.remove_stop_words(tokenized_words)
         if remove_punctuation is True:
             cleaned_words = self.remove_punctuation(cleaned_words)
+        if remove_proper_nouns:
+            cleaned_words = self.remove_proper_nouns(cleaned_words)
         stemmed = self.stem(cleaned_words)
         return stemmed
 
-    def run_lemma_pipeline(self,remove_punctuation=False):
+    def run_lemma_pipeline(self,remove_punctuation=False,remove_proper_nouns=False):
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
         cleaned_words = self.remove_stop_words(tokenized_words)
-        print("Aaa")
         if remove_punctuation:
             cleaned_words = self.remove_punctuation(cleaned_words)
+        if remove_proper_nouns:
+            cleaned_words = self.remove_proper_nouns(cleaned_words)
         lemmed = self.lemma(cleaned_words)
         return lemmed

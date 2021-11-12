@@ -136,3 +136,4 @@ data_collection/gutenberg/cache
 data_collection/raw_books
 *.txt.gz
 *.db
+feature_engineering/temp*
