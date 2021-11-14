@@ -25,7 +25,7 @@ def tsne_prep_from_words(model,text_dict):
 				genre.append(key)
 	return (labels,tokens,genre)
 
-def tsne_prep_from_vectors(model,vector_dict,genre_dict):
+def tsne_prep_from_vectors(vector_dict,genre_dict):
 	labels=[]
 	tokens=[]
 	genre=[]
@@ -58,7 +58,7 @@ def tsne_plot(labels,tokens,genre):
 	if genre is not None:
 		df['Genre'] = genre
 	df["label"] = labels
-
+	sns.color_palette("Paired")
 	#plt.figure(figsize=(16, 16))
 	sns.set_context('notebook', font_scale=1.1)
 	sns.set_style("ticks")
@@ -71,7 +71,7 @@ def tsne_plot(labels,tokens,genre):
 
 	for i in range(len(x)):
 		plt.scatter(x[i], y[i])
-		plt.annotate(labels[i],
+		plt.annotate(labels[i][:100]+"("+genre[i]+")",
 						xy=(x[i], y[i]),
 						xytext=(5, 2),
 						textcoords='offset points',
@@ -96,7 +96,7 @@ def plot_words(model,words):
 
 
 
-def plot_vectors(model,doc_vecs,genre_dict):
-	(labels,tokens,genre) = tsne_prep_from_vectors(model,doc_vecs,genre_dict)
+def plot_vectors(doc_vecs,genre_dict):
+	(labels,tokens,genre) = tsne_prep_from_vectors(doc_vecs,genre_dict)
 	tsne_plot(labels,tokens,genre)
 

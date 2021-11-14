@@ -59,7 +59,12 @@ class Preprocessor:
         lem = [self.lemmatizer.lemmatize(each) for each in words]
         return lem
 
-    def run_basic_pipeline(self,remove_punctuation=False,remove_proper_nouns=False):
+    def remove_single_letters(self,words):
+        cleaned = [each for each in words if each and len(each)>1]
+        return cleaned
+
+    
+    def run_basic_pipeline(self,remove_punctuation=True,remove_proper_nouns=False):
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
@@ -71,7 +76,7 @@ class Preprocessor:
         stemmed = self.stem(cleaned_words)
         return stemmed
 
-    def run_lemma_pipeline(self,remove_punctuation=False,remove_proper_nouns=False):
+    def run_lemma_pipeline(self,remove_punctuation=True,remove_proper_nouns=False):
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
@@ -80,5 +85,7 @@ class Preprocessor:
             cleaned_words = self.remove_punctuation(cleaned_words)
         if remove_proper_nouns:
             cleaned_words = self.remove_proper_nouns(cleaned_words)
+        
         lemmed = self.lemma(cleaned_words)
-        return lemmed
+        cleaned_lemmed = self.remove_single_letters( self.remove_stop_words(lemmed))
+        return cleaned_lemmed

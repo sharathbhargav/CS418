@@ -36,6 +36,16 @@ class Visualize:
         self.titles = selected_books.iloc[:,3].tolist()
         print("Loading data complete")
 
+    def save_pickles(self):
+        CommonHelpers.dump_pickle("../data/feature/word2vec_google_1635_books.pickle",self.book_vectors)
+        CommonHelpers.dump_pickle("../data/feature/categories.pickle",self.categories)
+        CommonHelpers.dump_pickle("../data/feature/titles.pickle",self.titles)
+
+    def load_pickles(self):
+        self.book_vectors = CommonHelpers.load_pickle("../data/feature/word2vec_google_1635_books.pickle")
+        self.categories = CommonHelpers.load_pickle("../data/feature/categories.pickle")
+        self.titles = CommonHelpers.load_pickle("../data/feature/titles.pickle")
+
     def get_number_id(self,file_name):
         regex = r"([a-z_A-Z]+)(\d+)"
         match = re.search(regex, file_name)
@@ -49,5 +59,5 @@ class Visualize:
             doc_vec[self.titles[i]]= self.book_vectors[i]
             genres[self.titles[i]] = self.categories[i]
         print("Starting plot")
-        tsne.plot_vectors(self.model_google,doc_vec,genres)
+        tsne.plot_vectors(doc_vec,genres)
 
