@@ -5,10 +5,10 @@ import nltk
 from gensim.models import Word2Vec, KeyedVectors
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
-import spacy
+# import spacy
 import seaborn as sns
 import pandas as pd
-import plotly.express as px
+# import plotly.express as px
 # nlp = spacy.load('en_core_web_sm')
 
 
