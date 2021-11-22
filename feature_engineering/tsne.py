@@ -5,12 +5,10 @@ import nltk
 from gensim.models import Word2Vec, KeyedVectors
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
-import spacy
+# import spacy
 import seaborn as sns
 import pandas as pd
-import plotly.express as px
-import colorcet as cc
-# nlp = spacy.load('en_core_web_sm')
+
 
 
 def tsne_prep_from_words(model,text_dict):
