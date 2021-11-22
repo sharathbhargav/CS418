@@ -138,3 +138,5 @@ data_collection/raw_books
 *.db
 feature_engineering/temp*
 data/preprocessed/*
+data/feature/*
+data/eda/*

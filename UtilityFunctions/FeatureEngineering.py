@@ -1,5 +1,5 @@
 import numpy as np
-
+import pandas as pd
 def make_feature_vector(words, model, num_features):
     """
     Average the word vectors for a set of words
@@ -12,8 +12,10 @@ def make_feature_vector(words, model, num_features):
         if word in index2word_set: 
             n_words = n_words + 1
             feature_vec = np.add(feature_vec,model[word])
-    
-    feature_vec = np.divide(feature_vec, n_words)
+    try:
+        feature_vec = np.divide(feature_vec, n_words)
+    except:
+        print("Divide by zero error for ",words[:20])
     return feature_vec
 
 
@@ -28,3 +30,5 @@ def get_avg_feature_vectors(books, model, num_features):
         feature_vectors[counter] = make_feature_vector(review, model, num_features)
         counter = counter + 1
     return feature_vectors
+
+

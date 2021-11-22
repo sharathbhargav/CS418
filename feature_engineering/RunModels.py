@@ -31,6 +31,6 @@ class Run_Model:
         # self.score = metrics.f1_score(self.y_test, self.result, pos_label=list(set(self.y_test)))
         self.confusion = confusion_matrix(self.y_test, self.result)
         self.accuracy =accuracy_score(self.y_test, self.result)
+        
         return (self.confusion,self.accuracy)
-
 

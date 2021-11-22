@@ -9,6 +9,7 @@ import spacy
 import seaborn as sns
 import pandas as pd
 import plotly.express as px
+import colorcet as cc
 # nlp = spacy.load('en_core_web_sm')
 
 
@@ -42,8 +43,8 @@ def tsne_prep_from_vectors(vector_dict,genre_dict):
 
 def tsne_plot(labels,tokens,genre):
 	"Creates and TSNE model and plots it"
-	tsne_model = TSNE(perplexity=15, n_components=2,
-						init='pca', n_iter=7000, random_state=32)
+	tsne_model = TSNE(perplexity=10, n_components=2,
+						init='pca', n_iter=8500, random_state=1507)
 	new_values = tsne_model.fit_transform(tokens)
 
 	x = []
@@ -58,27 +59,30 @@ def tsne_plot(labels,tokens,genre):
 	if genre is not None:
 		df['Genre'] = genre
 	df["label"] = labels
-	sns.color_palette("Paired")
+	palette = sns.color_palette(cc.glasbey, n_colors=25)
 	#plt.figure(figsize=(16, 16))
 	sns.set_context('notebook', font_scale=1.1)
 	sns.set_style("ticks")
+
 	if genre is not None:
 		sns.lmplot(data=df, x='X', y='Y', hue='Genre', fit_reg=False,
-				legend=True)
+				legend=True,palette=palette)
 	else:
 		sns.lmplot(data=df, x='X', y='Y', fit_reg=False,
-				legend=True)
+				legend=True,palette=palette)
 
 	for i in range(len(x)):
 		plt.scatter(x[i], y[i])
-		plt.annotate(labels[i][:100]+"("+genre[i]+")",
+		'''
+		plt.annotate(genre[i],
 						xy=(x[i], y[i]),
 						xytext=(5, 2),
 						textcoords='offset points',
 						ha='right',
 						va='bottom',
 						fontsize=8)
-
+						'''
+	plt.legend(loc="lower left", ncol=len(df.columns))
 	plt.show()
 	print('hello')
 

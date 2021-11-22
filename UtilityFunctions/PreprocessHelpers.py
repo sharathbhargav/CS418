@@ -11,6 +11,7 @@ import math
 import string
 import re
 import xml.etree.ElementTree as ET
+import contractions
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('punkt')
@@ -30,6 +31,7 @@ class Preprocessor:
     def clean_chars(self):
         self.raw_string = s = re.sub('[^A-Za-z]', r' ', self.raw_string)
 
+
     def remove_proper_nouns(self,words):
         tagged_sentence = nltk.tag.pos_tag(words)
         edited_sentence = [word for word,tag in tagged_sentence if tag != 'NNP' and tag != 'NNPS']
@@ -40,6 +42,10 @@ class Preprocessor:
         # todo check if all punctuations are removed
         sentences = nltk.tokenize.word_tokenize(self.raw_string)
         words =[each.lower() for each in sentences]
+        return words
+
+    def expand_contractions(self,words):
+        words = [contractions.fix(each) for each in words]
         return words
 
     def remove_punctuation(self,words):
@@ -68,7 +74,8 @@ class Preprocessor:
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
-        cleaned_words = self.remove_stop_words(tokenized_words)
+        expanded = self.expand_contractions(tokenized_words)
+        cleaned_words = self.remove_stop_words(expanded)
         if remove_punctuation is True:
             cleaned_words = self.remove_punctuation(cleaned_words)
         if remove_proper_nouns:
@@ -80,7 +87,8 @@ class Preprocessor:
         if self.raw_string is None:
             raise NotImplementedError
         tokenized_words = self.tokenize_corpus()
-        cleaned_words = self.remove_stop_words(tokenized_words)
+        expanded = self.expand_contractions(tokenized_words)
+        cleaned_words = self.remove_stop_words(expanded)
         if remove_punctuation:
             cleaned_words = self.remove_punctuation(cleaned_words)
         if remove_proper_nouns:
@@ -89,3 +97,9 @@ class Preprocessor:
         lemmed = self.lemma(cleaned_words)
         cleaned_lemmed = self.remove_single_letters( self.remove_stop_words(lemmed))
         return cleaned_lemmed
+
+    def run_eda_pipeline(self):
+        tokenized_words = self.tokenize_corpus()
+        expanded = self.expand_contractions(tokenized_words)
+        cleaned_words = self.remove_stop_words(expanded)
+        return cleaned_words

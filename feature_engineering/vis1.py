@@ -7,6 +7,6 @@ name_pickle_path = "../data/preprocessed/names_1635.pickle"
 
 from Visualize1 import Visualize
 vis = Visualize()
-vis.load_pickles()
+vis.load_data()
 vis.book_vectors = np.nan_to_num(vis.book_vectors)
 vis.plot()

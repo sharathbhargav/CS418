@@ -4,9 +4,11 @@ from UtilityFunctions import CommonHelpers, PreprocessHelpers
 
 
 RAW_BOOK_FOLDER = os.path.join("..","data_collection","raw_books")
-PREPROCESSED_STORE_LOC = os.path.join("..","data","preprocessed")
-aggragate_pickle_name = "books_1635_preprocessed.pickle"
-name_pickle_name = "names_1635.pickle"
+PREPROCESSED_STORE_LOC = os.path.join("..","data","eda") # change output folder
+aggragate_pickle_name = "books_english.pickle"
+name_pickle_name = "names_english.pickle"
+
+
 books=[]
 book_names=[]
 file_list = os.listdir(RAW_BOOK_FOLDER)
@@ -22,7 +24,7 @@ for i in range(200,len(file_list),200):
         full_text= CommonHelpers.load_pickle(os.path.abspath(os.path.join(RAW_BOOK_FOLDER, file_name)))
         preprocessor = PreprocessHelpers.Preprocessor()    
         preprocessor.set_text(full_text)
-        words = preprocessor.run_basic_pipeline(True)
+        words = preprocessor.run_eda_pipeline() # Change here to run_lemma_pipeline
         # print(file_name, len(words))
         books.append(words)
         book_names.append(file_name)
