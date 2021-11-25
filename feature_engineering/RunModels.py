@@ -1,4 +1,5 @@
 
+from re import split
 import sys,os
 sys.path.append( os.path.join(".."))
 import pandas as pd
@@ -12,13 +13,28 @@ from sklearn.pipeline import Pipeline
 from UtilityFunctions import CommonHelpers,PreprocessHelpers,FeatureEngineering
 from sklearn import metrics
 
-class Run_Model:
-    def __init__(self,model,all_vectors,all_labels):
-        self.model = model
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(all_vectors, 
-        all_labels, test_size=0.20, random_state=4)
-        
+class Split_Data:
+    def __init__(self,X,Y):
+        self.X=X
+        self.Y=Y
 
+    def get_split(self,split_ratio=0.2,random_state = 473):
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, 
+        self.Y, test_size=split_ratio, random_state=random_state)
+
+    def get_x_split(self):
+        return (self.x_train,self.x_test)
+
+    def get_y_split(self):
+        return (self.y_train,self.y_test)
+
+class Run_Model:
+    def __init__(self,model,split_obj:Split_Data):
+        self.model = model
+        if split_obj is None:
+            raise Exception("Split data not available")
+        self.x_train, self.x_test=split_obj.get_x_split()
+        self.y_train, self.y_test = split_obj.get_y_split() 
 
     def run_model(self):
         self.fit_model = self.model.fit(self.x_train,self.y_train)
@@ -31,6 +47,5 @@ class Run_Model:
         # self.score = metrics.f1_score(self.y_test, self.result, pos_label=list(set(self.y_test)))
         self.confusion = confusion_matrix(self.y_test, self.result)
         self.accuracy =accuracy_score(self.y_test, self.result)
-        
         return (self.confusion,self.accuracy)
 

@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from scipy import spatial
+
 def make_feature_vector(words, model, num_features):
     """
     Average the word vectors for a set of words
@@ -32,3 +34,5 @@ def get_avg_feature_vectors(books, model, num_features):
     return feature_vectors
 
 
+def get_document_similarity(vector1,vector2):
+    return 1 - spatial.distance.cosine(vector1, vector2)
