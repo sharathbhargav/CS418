@@ -21,8 +21,9 @@ class Word2Vec_Features:
     def load_data(self,cache=True):
         if cache == False:
             print("Loading data")
-            self.model_google = KeyedVectors.load_word2vec_format(self.google_corpus_path,binary=True)
-            self.book_vectors = FeatureEngineering.get_avg_feature_vectors(self.list_of_words,self.model_google,300)
+            self.book_vectors = FeatureEngineering.get_trained_vectors(self.list_of_words, Word2Vec)
+            # self.model_google = KeyedVectors.load_word2vec_format(self.google_corpus_path,binary=True)
+            # self.book_vectors = FeatureEngineering.get_avg_feature_vectors(self.list_of_words,self.model_google,300)
             df = pd.read_csv("../data/pg_catalog.csv")
             df["category"] = df["LoCC"].str[:1]
             category_list_train = [int(self.get_number_id(each)) for each in self.book_names]
@@ -33,12 +34,14 @@ class Word2Vec_Features:
                 self.categories.append(selected_books[selected_books["Text#"]==each]["category"].values[0])
                 self.titles.append(selected_books[selected_books["Text#"]==each]["Title"].values[0])
             print("Loading data complete")
-            CommonHelpers.dump_pickle("../data/feature/word2vec_google_books.pickle",self.book_vectors)
+            # CommonHelpers.dump_pickle("../data/feature/word2vec_google_books.pickle",self.book_vectors)
+            CommonHelpers.dump_pickle("../data/feature/word2vec_w2v_gen_books.pickle",self.book_vectors)
             CommonHelpers.dump_pickle("../data/feature/categories.pickle",self.categories)
             CommonHelpers.dump_pickle("../data/feature/titles.pickle",self.titles)
             print("Saving to pickles done")
         else:
-            self.book_vectors = CommonHelpers.load_pickle("../data/feature/word2vec_google_books.pickle")
+            # self.book_vectors = CommonHelpers.load_pickle("../data/feature/word2vec_google_books.pickle")
+            self.book_vectors = CommonHelpers.load_pickle("../data/feature/word2vec_w2v_gen_books.pickle")
             self.categories = CommonHelpers.load_pickle("../data/feature/categories.pickle")
             self.titles = CommonHelpers.load_pickle("../data/feature/titles.pickle")
 

@@ -12,6 +12,7 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 from sklearn.pipeline import Pipeline
 from UtilityFunctions import CommonHelpers,PreprocessHelpers,FeatureEngineering
 from sklearn import metrics
+from sklearn import preprocessing
 
 class Split_Data:
     def __init__(self,X,Y):
@@ -21,6 +22,13 @@ class Split_Data:
     def get_split(self,split_ratio=0.2,random_state = 473):
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, 
         self.Y, test_size=split_ratio, random_state=random_state)
+
+    def get_split_preprocessed(self,split_ratio=0.2,random_state = 473):
+        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(self.X, 
+        self.Y, test_size=split_ratio, random_state=random_state)
+        scaler = preprocessing.StandardScaler().fit(self.x_train)
+        self.x_train = scaler.transform(self.x_train)
+        self.x_test = scaler.transform(self.x_test)
 
     def get_x_split(self):
         return (self.x_train,self.x_test)
