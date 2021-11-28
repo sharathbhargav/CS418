@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy import spatial
+from sklearn import preprocessing
 
 def make_feature_vector(words, model, num_features):
     """
@@ -31,7 +32,7 @@ def get_avg_feature_vectors(books, model, num_features):
     for review in books:
         feature_vectors[counter] = make_feature_vector(review, model, num_features)
         counter = counter + 1
-
+    
     return feature_vectors
 
 def get_trained_vectors(books,model):
@@ -58,6 +59,10 @@ def get_trained_vectors(books,model):
                 else:
                     book_vec[cnt] = (book_vec[cnt] + wordvec_dict[word])
             cnt += 1
+    book_vec = list(book_vec.values())
+    print(len(book_vec), type(book_vec))
+    scaler = preprocessing.StandardScaler().fit(book_vec)
+    book_vec = scaler.transform(book_vec)
     return book_vec
 
 
