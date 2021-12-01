@@ -141,4 +141,6 @@ feature_engineering/temp*
 data/preprocessed/*
 data/feature/*
 data/eda/*
+data/vectors/*
 temp*
+*.idea/*

@@ -26,9 +26,9 @@ class Kmeans:
         def nltk_k(self):
                 rn =np.random.random((21, 300))
                 kclusterer = KMeansClusterer(21, distance=nltk.cluster.util.cosine_distance, repeats=25)
-                assigned_clusters = kclusterer.cluster(self.x_train, assign_clusters=True)
+                self.assigned_clusters = kclusterer.cluster(self.x_train, assign_clusters=True)
                 CommonHelpers.dump_pickle("../data/kmeans_clusters.pickle",assigned_clusters)
-                print (assigned_clusters)
+                print (self.assigned_clusters)
 
 
         def load_clusters(self):
@@ -40,12 +40,18 @@ class Kmeans:
                 model = TSNE(n_components=2, random_state=0)
                 np.set_printoptions(suppress=True)
                 Y=model.fit_transform(self.x_train)
-                plt.scatter(Y[:, 0], Y[:, 1], c=self.assigned_clusters, s=10,alpha=.5)
+                colors = np.array(["r","g","b"])
+                import itertools
+                import seaborn as sns
+                colors = itertools.cycle(["r", "b", "g"])
+                sns.scatterplot(x=Y[:, 0],y=Y[:, 1],hue=self.assigned_clusters,palette=sns.color_palette("hls",21))
+                # plt.scatter(Y[:, 0], Y[:, 1], c=self.assigned_clusters, colormap='jet',s=10,alpha=.5)
 
                 for j in range(len(self.y_train)):    
-                        plt.annotate(self.assigned_clusters[j],xy=(Y[j][0], Y[j][1]),xytext=(0,0),textcoords='offset points')
+                        plt.annotate(self.y_train[j],xy=(Y[j][0], Y[j][1]),xytext=(0,0),textcoords='offset points')
                 
-                plt.show()      
+                plt.show()  
+                print(set(self.assigned_clusters))    
 gen = Generate_word2vec_features.Word2Vec_Features()
 gen.init_data()
 gen.load_data(cache=True)
