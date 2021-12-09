@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # import spacy
 import seaborn as sns
 import pandas as pd
-
+from scipy.spatial.distance import cdist
 
 
 def tsne_prep_from_words(model,text_dict):
@@ -37,11 +37,13 @@ def tsne_prep_from_vectors(vector_dict,genre_dict):
 		return (labels,tokens,genre)
 	else:
 		return (labels,tokens,None)
-
+def cosine(a1,a2):
+	val_out = 1 - cdist(a1, a2, 'cosine')
+	return val_out
 
 def tsne_plot(labels,tokens,genre):
 	"Creates and TSNE model and plots it"
-	tsne_model = TSNE(perplexity=10, n_components=2,
+	tsne_model = TSNE(perplexity=10, n_components=2,metric=cosine,
 						init='pca', n_iter=8500, random_state=1507)
 	new_values = tsne_model.fit_transform(tokens)
 
@@ -57,17 +59,22 @@ def tsne_plot(labels,tokens,genre):
 	if genre is not None:
 		df['Genre'] = genre
 	df["label"] = labels
-	palette = sns.color_palette(cc.glasbey, n_colors=25)
-	#plt.figure(figsize=(16, 16))
+	colors = ["#000000","#78909C","#3E2723","#DD2C00","#AEEA00",
+				"#33691E","#64FFDA","#01579B","#311B92","#E040FB",
+				"#C51162","#D50000","ffbb33","#00c851","#37b5e5",
+				"#9933cc","#4A148C","148c4a","4a148c","8c4a14",
+				"8c174a"
+]
+
 	sns.set_context('notebook', font_scale=1.1)
 	sns.set_style("ticks")
 
 	if genre is not None:
 		sns.lmplot(data=df, x='X', y='Y', hue='Genre', fit_reg=False,
-				legend=True,palette=palette)
+				legend=True)
 	else:
 		sns.lmplot(data=df, x='X', y='Y', fit_reg=False,
-				legend=True,palette=palette)
+				legend=True)
 
 	for i in range(len(x)):
 		plt.scatter(x[i], y[i])
@@ -80,19 +87,12 @@ def tsne_plot(labels,tokens,genre):
 						va='bottom',
 						fontsize=8)
 						'''
-	plt.legend(loc="lower left", ncol=len(df.columns))
+	plt.legend(loc="upper left", ncol=len(df.columns))
 	plt.show()
-	print('hello')
 
 
 def plot_words(model,words):
-	'''
-	words = {'adventure': ['adventure', 'voyage', 'combat', 'fight', 'battle', 'escapade', 'dangerous', 'undertake', 'gamble', 'chance', 'risk', 'hazard', 'venture', 'stake', 'jeopardy'],
-				'romance': ['romance', 'love', 'affair', 'woo', 'solicit', 'flirt', 'dally', 'butterfly', 'coquet', 'coquette', 'philander', 'comfort', 'console', 'solace', 'ease', 'soothe', 'friendship', 'passion', 'beloved', 'dear', 'honey', 'intimate', 'beautiful', 'marry', 'espouse', 'sweet', 'angelic', 'perfume', 'girl', 'miss', 'child', 'kiss', 'treasure'],
-				'tragedy': ['tragedy', 'death', 'disaster', 'calamity', 'catastrophe', 'cataclysm', 'betrayal', 'treason', 'perfidy', 'grief', 'heartache', 'heartbreak', 'sorrow', 'humiliation', 'mortification', 'abasement', 'chagrin', 'misfortune', 'luck', 'omen', 'cry'],
-				'mystery': ['suspense', 'frenzy', 'mystery', 'enigma', 'secret', 'whodunit', 'thriller', 'crime', 'detective', 'investigator', 'police', 'evidence', 'testify', 'witness', 'attest', 'clue', 'murder', 'execution', 'kill', 'weapon', 'fear', 'dread', 'terror', 'panic', 'pocket', 'solve'],
-				'humor': ['comedy', 'drollery', 'clown', 'funny', 'humor', 'wit', 'mood', 'temper', 'satire', 'sarcasm', 'irony', 'remark', 'parody', 'lampoon', 'spoof', 'mockery', 'burlesque', 'travesty', 'pasquinade', 'laugh']}
-	'''
+	
 	(labels,tokens,genre) = tsne_prep_from_words(model,words)
 	tsne_plot(labels,tokens,genre)
 

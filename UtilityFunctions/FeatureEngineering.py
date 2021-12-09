@@ -43,6 +43,7 @@ def get_trained_vectors(books,model):
     model_w2v = model(list_of_words[:], min_count = 1, window = 5)
     model_w2v.train(list_of_words[:], total_examples=len(list_of_words[:]), epochs=2)
     wordvec_dict = dict({})
+    
     for idx, key in enumerate(model_w2v.wv.index_to_key):
         wordvec_dict[key] = model_w2v.wv[key]
     cnt = 0
@@ -50,7 +51,7 @@ def get_trained_vectors(books,model):
     cnt_arr = []
     for book in list_of_words[:]:
         if len(book) == 0:
-            book_vec[cnt] = wordvec_dict["note"]
+            book_vec[cnt] = np.zeros_like(wordvec_dict["note"])
             cnt += 1
         else:
             for word in book:

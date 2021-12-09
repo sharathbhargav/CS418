@@ -68,7 +68,7 @@ class TFIDF_Vectors:
         print('unigrams vector loaded')
 
 
-    def load_unigram_pickles(self, type = 'full'):
+    def save_bigram_pickles(self, type = 'full'):
         if type == 'SVD':
             self.svd_bigram_tfidf_vectors = CommonHelpers.load_pickle("../data/feature/svd_bigram_tfidf_vectors.pickle")
         else:

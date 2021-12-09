@@ -12,7 +12,7 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 from sklearn.pipeline import Pipeline
 from UtilityFunctions import CommonHelpers,PreprocessHelpers,FeatureEngineering
 from sklearn import metrics
-
+from sklearn.metrics import f1_score
 class Split_Data:
     def __init__(self,X,Y):
         self.X=X
@@ -47,5 +47,5 @@ class Run_Model:
         # self.score = metrics.f1_score(self.y_test, self.result, pos_label=list(set(self.y_test)))
         self.confusion = confusion_matrix(self.y_test, self.result)
         self.accuracy =accuracy_score(self.y_test, self.result)
-        return (self.confusion,self.accuracy)
-
+        self.f1=f1_score(self.y_test, self.result, average='macro')
+        return [self.confusion,self.accuracy,self.f1]
